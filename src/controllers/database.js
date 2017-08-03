@@ -1,6 +1,6 @@
 var mongodb = require('mongodb').MongoClient;
 var objectId = require('mongodb').ObjectID;
-var url = 'mongodb://<dbuser>:<dbpassword>@ds129183.mlab.com:29183/middleman';
+var url = 'mongodb://test:pass@ds129183.mlab.com:29183/middleman';
 
 var database = function () {
     var saveUser = function (user, callback) {
