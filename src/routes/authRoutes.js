@@ -59,6 +59,8 @@ var router = function () {
                 res.redirect('profile2');
             } else if (req.user.type === 'handler') {
                 res.redirect('profileHandler2');
+            } else if (req.user.type === 'fixer') {
+                res.redirect('profileFixer2');
             } else if (req.user.type === 'admin') {
                 res.redirect('profileAdmin');
             }
@@ -149,6 +151,25 @@ var router = function () {
                 handler: req.user.email
             }, function (results) {
                 res.redirect('profileHandler2');
+            });
+        });
+
+    authRouter.route('/profileFixer2')
+        .all(function (req, res, next) {
+            if (!(req.user && req.user.type === 'fixer')) {
+                res.redirect('/');
+            } else {
+                next();
+            }
+        })
+        .get(function (req, res) {
+            database.getProblems({
+                fixer: req.user.email
+            }, function (results) {
+                //console.log(results);
+                res.render('profileFixer2', {
+                    results: results
+                });
             });
         });
 

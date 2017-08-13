@@ -129,9 +129,9 @@ var router = function () {
                 //console.log(results);
                 results[0].status = 'completed'
                 database.updateProblem(req.params.id, results[0]);
+
+                res.redirect('/auth/profileHandler2');
             });
-        
-            res.redirect('/auth/profileHandler2');
         });
 
     problemRouter.route('/rating/:id')
@@ -169,9 +169,9 @@ var router = function () {
             }, function (results) {
                 results[0].rating = req.body.rating;
                 database.updateProblem(req.params.id, results[0]);
+
+                res.redirect('/auth/profile2');
             });
-        
-            res.redirect('/auth/profile2');
         });
 
     return problemRouter;

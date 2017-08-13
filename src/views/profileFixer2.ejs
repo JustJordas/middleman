@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Middleman Profile</title>
+</head>
+
+<body>
+    <div>
+        On going issues:
+        <% for (var i = 0; i < results.length; i ++) { %>
+            <% if(results[i].status === 'onGoing') { %>
+            <details>
+                <summary>
+                    <%= results[i].summary %>
+                </summary>
+                <p>
+                    <%= results[i]._id %>
+                </p>
+                <p>
+                    <%= results[i].description %>
+                </p>
+                <p>
+                    <%- JSON.stringify(results[i].address) %>
+                </p>
+                <p>
+                    <%= results[i].phone %>
+                </p>
+                <form action="/problem/<%= results[i]._id %>" method="get">
+                    <input type='submit' value='Details' />
+                </form>
+            </details>
+            <% } %>
+        <% } %>
+    </div>
+    <form action="/auth/logOut" method="post">
+        <input type="submit" value="Log out">
+    </form>
+</body>
+
+</html>

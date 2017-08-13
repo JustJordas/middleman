@@ -31,6 +31,8 @@ app.get('/', function (req, res) {
         res.redirect('/auth/profile2');
     } else if (req.user && req.user.type === 'handler') {
         res.redirect('/auth/profileHandler2');
+    } else if (req.user && req.user.type === 'fixer') {
+        res.redirect('/auth/profileFixer2');
     } else if (req.user && req.user.type === 'admin') {
         res.redirect('/auth/profileAdmin');
     } else {
