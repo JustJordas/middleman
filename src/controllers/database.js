@@ -57,7 +57,7 @@ var database = function () {
     var getProblems = function (filter, callback) {
         mongodb.connect(url, function (err, db) {
             var collection = db.collection('problems');
-
+            
             collection.find(filter).toArray(function (err, result) {
                 return callback(result);
             });
@@ -67,7 +67,7 @@ var database = function () {
     var updateProblem = function (id, update) {
         mongodb.connect(url, function (err, db) {
             var collection = db.collection('problems');
-            console.log('here');
+            
             collection.updateOne({
                 _id: objectId(id)
             }, {
@@ -87,6 +87,24 @@ var database = function () {
             });
         });
     };
+    
+    var saveUpdate = function (update) {
+        mongodb.connect(url, function(err, db) {
+            var collection = db.collection('updates');
+            
+            collection.insert(update);
+        });
+    };
+    
+    var getUpdates = function (filter, callback) {
+        mongodb.connect(url, function (err, db) {
+            var collection = db.collection('updates');
+
+            collection.find(filter).toArray(function (err, result) {
+                return callback(result);
+            });
+        });
+    };
 
     return {
         saveUser: saveUser,
@@ -94,7 +112,9 @@ var database = function () {
         checkCredentials: checkCredentials,
         getProblems: getProblems,
         updateProblem: updateProblem,
-        getHandlers: getHandlers
+        getHandlers: getHandlers,
+        saveUpdate: saveUpdate,
+        getUpdates: getUpdates
     }
 }
 

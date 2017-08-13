@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Middleman</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <form action="/auth/logOut" method="post">
+        <input type="submit" value="Log out">
+    </form>
+    <div class="priorityRed">
+        <h1>
+            Red
+        </h1>
+        <%for (var i = 0; i < results.length; i ++) {%>
+            <%if(results[i].status === 'onGoing' && results[i].priority === 'red') {%>
+                <details class="onGoingDetails">
+                    <summary>
+                        <%=results[i].summary%>
+                            -
+                            <%=results[i]._id%>
+                    </summary>
+                    <p>
+                        Description:
+                        <%=results[i].description%>
+                    </p>
+                    <p>
+                        Address:
+                        <%=JSON.stringify(results[i].address)%>
+                    </p>
+                    <p>
+                        Phone:
+                        <%=results[i].phone%>
+                    </p>
+                    <p>
+                        Type:
+                        <%=results[i].type%>
+                    </p>
+                    <p>
+                        Fixer:
+                        <%=results[i].fixer%>
+                    </p>
+                    <p>
+                        Deadline:
+                        <%=results[i].deadline%>
+                    </p>
+                    <form action="/problem/<%= results[i]._id %>" method="get">
+                        <input type='submit' value='Details' />
+                    </form>
+                </details>
+                <div class="onGoingOptions">
+                </div>
+                <%}}%>
+    </div>
+    <div class="priorityYellow">
+        <h1>
+            Yellow
+        </h1>
+        <%for (var i = 0; i < results.length; i ++) {%>
+            <%if(results[i].status === 'onGoing' && results[i].priority === 'yellow') {%>
+                <details class="onGoingDetails">
+                    <summary>
+                        <%=results[i].summary%>
+                            -
+                            <%=results[i]._id%>
+                    </summary>
+                    <p>
+                        Description:
+                        <%=results[i].description%>
+                    </p>
+                    <p>
+                        Address:
+                        <%=JSON.stringify(results[i].address)%>
+                    </p>
+                    <p>
+                        Phone:
+                        <%=results[i].phone%>
+                    </p>
+                    <p>
+                        Type:
+                        <%=results[i].type%>
+                    </p>
+                    <p>
+                        Fixer:
+                        <%=results[i].fixer%>
+                    </p>
+                    <p>
+                        Deadline:
+                        <%=results[i].deadline%>
+                    </p>
+                    <form action="/problem/<%= results[i]._id %>" method="get">
+                        <input type='submit' value='Details' />
+                    </form>
+                </details>
+                <div class="onGoingOptions">
+                </div>
+                <%}}%>
+    </div>
+    <div class="priorityGreen">
+        <h1>
+            Green
+        </h1>
+        <%for (var i = 0; i < results.length; i ++) {%>
+            <%if(results[i].status === 'onGoing' && results[i].priority === 'green') {%>
+                <details class="onGoingDetails">
+                    <summary>
+                        <%=results[i].summary%>
+                            -
+                            <%=results[i]._id%>
+                    </summary>
+                    <p>
+                        Description:
+                        <%=results[i].description%>
+                    </p>
+                    <p>
+                        Address:
+                        <%=JSON.stringify(results[i].address)%>
+                    </p>
+                    <p>
+                        Phone:
+                        <%=results[i].phone%>
+                    </p>
+                    <p>
+                        Type:
+                        <%=results[i].type%>
+                    </p>
+                    <p>
+                        Fixer:
+                        <%=results[i].fixer%>
+                    </p>
+                    <p>
+                        Deadline:
+                        <%=results[i].deadline%>
+                    </p>
+                    <form action="/problem/<%= results[i]._id %>" method="get">
+                        <input type='submit' value='Details' />
+                    </form>
+                </details>
+                <div class="onGoingOptions">
+                </div>
+                <%}}%>
+    </div>
+    <div class="newAssigned">
+        <%for (var i = 0; i < results.length; i ++) {%>
+            <%if(results[i].status === 'pending') {%>
+                <details>
+                    <summary>
+                        <%=results[i].summary%>
+                    </summary>
+                    <p>
+                        <%=results[i]._id%>
+                    </p>
+                    <p>
+                        <%=results[i].description%>
+                    </p>
+                    <p>
+                        <%=JSON.stringify(results[i].address)%>
+                    </p>
+                    <p>
+                        <%=results[i].phone%>
+                    </p>
+                    <form action="" method="post">
+                        <input name="id" type="hidden" value="<%=results[i]._id%>" />
+                        <input name="type" type="text" placeholder="Problem type" required/><br/>
+                        <input name="fixer" type="email" placeholder="Fixer" required/><br/>
+                        <input name="deadline" type="date" required/><br/>
+                        <input name="priority" type="radio" value="green" checked />green<br/>
+                        <input name="priority" type="radio" value="yellow" />yellow<br/>
+                        <input name="priority" type="radio" value="red" />red<br/>
+                        <input name="update" type="text" placeholder="Anything to add" /><br/>
+                        <input type="submit" value="Save" />
+                    </form>
+                </details>
+                <%}}%>
+    </div>
+</body>
+
+</html>

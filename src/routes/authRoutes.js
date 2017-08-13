@@ -8,7 +8,7 @@ var database = require('../controllers/database')();
 var router = function () {
     authRouter.route('/signUp')
         .get(function (req, res) {
-            res.render('signUp');
+            res.render('signUp2');
         })
         .post(function (req, res) {
             var user = {
@@ -22,10 +22,12 @@ var router = function () {
             database.saveUser(user, function (response) {
                 if (response === true) {
                     req.login(req.body, function () {
-                        res.redirect('/auth/profile')
+                        res.redirect('/auth/profile2')
                     });
                 } else {
-                    res.redirect('/auth/signUp');
+                    res.redirect('/auth/signUp2', {
+                        fail: true
+                    });
                 }
             });
         });
@@ -54,12 +56,18 @@ var router = function () {
             failureRedirect: '/'
         }), function (req, res) {
             if (req.user.type === 'client') {
-                res.redirect('profile');
+                res.redirect('profile2');
             } else if (req.user.type === 'handler') {
-                res.redirect('profileHandler');
+                res.redirect('profileHandler2');
             } else if (req.user.type === 'admin') {
                 res.redirect('profileAdmin');
             }
+        });
+
+    authRouter.route('/logOut')
+        .post(function (req, res) {
+            req.logout();
+            res.redirect('/');
         });
 
     authRouter.route('/logProblem')
@@ -69,9 +77,6 @@ var router = function () {
             }
             next();
         })
-        .get(function (req, res) {
-            res.render('logProblem');
-        })
         .post(function (req, res) {
             database.getHandlers(function (resultsHandlers) {
                 database.getProblems({}, function (resultsProblems) {
@@ -79,9 +84,9 @@ var router = function () {
                         client: req.user.email,
                         summary: req.body.summary,
                         description: req.body.description,
-                        adress: {
-                            adressLine1: req.body.adressLine1,
-                            adressLine2: req.body.adressLine2,
+                        address: {
+                            adressLine1: req.body.addressLine1,
+                            adressLine2: req.body.addressLine2,
                             city: req.body.city,
                             state: req.body.state,
                             zip: req.body.zip,
@@ -93,12 +98,31 @@ var router = function () {
                     }
 
                     database.saveProblem(problem);
+                    res.redirect('profile2');
                 });
             });
-            res.redirect('/auth/profile');
         });
 
-    authRouter.route('/profileHandler')
+    authRouter.route('/profile2')
+        .all(function (req, res, next) {
+            if (!(req.user && req.user.type === 'client')) {
+                res.redirect('/');
+            } else {
+                next();
+            }
+        })
+        .get(function (req, res) {
+            database.getProblems({
+                client: req.user.email
+            }, function (results) {
+                //console.log(results);
+                res.render('profile2', {
+                    results: results
+                });
+            });
+        });
+
+    authRouter.route('/profileHandler2')
         .all(function (req, res, next) {
             if (!(req.user && req.user.type === 'handler')) {
                 res.redirect('/');
@@ -110,23 +134,21 @@ var router = function () {
             database.getProblems({
                 handler: req.user.email
             }, function (results) {
-                console.log(results.length);
-                res.render('profileHandler', {
+                //console.log(results.length);
+                res.render('profileHandler2', {
                     results: results
                 });
             });
         })
         .post(function (req, res) {
             //how to update this one
-            console.log(req.body);
+            //console.log(req.body);
             req.body.status = 'onGoing';
             database.updateProblem(req.body.id, req.body);
             database.getProblems({
                 handler: req.user.email
             }, function (results) {
-                res.render('profileHandler', {
-                    results: results
-                });
+                res.redirect('profileHandler2');
             });
         });
 
@@ -139,7 +161,7 @@ var router = function () {
         })
         .get(function (req, res) {
             database.getHandlers(function (results) {
-                console.log(results);
+                //console.log(results);
 
                 res.render('profileAdmin', {
                     results: results
